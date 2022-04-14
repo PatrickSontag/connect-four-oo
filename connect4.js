@@ -9,7 +9,7 @@
 
 
 class Game {
-  constructor() {
+  constructor(color1, color2) {
     this.width = 7;  // 7
     this.height = 6; // 6
     this.currPlayer = 1;  // active player: 1 or 2
@@ -17,6 +17,8 @@ class Game {
     this.makeBoard();
     this.makeHtmlBoard();
     this.gameOver = false;
+    this.player1Color = color1;
+    this.player2Color = color2;
   }
 
   /** makeBoard: create in-JS board structure:
@@ -82,7 +84,14 @@ class Game {
     piece.classList.add('piece');
     piece.classList.add(`p${this.currPlayer}`);
     piece.style.top = -50 * (y + 2);
-
+    if (this.currPlayer === 1) {
+      piece.style.backgroundColor = this.player1Color.color;
+      console.log("player 1 color: ", this.player1Color.color);
+    }
+    else {
+      piece.style.backgroundColor = this.player2Color.color;
+      console.log("player 2 color: ", this.player2Color.color);
+    }
     const spot = document.getElementById(`${y}-${x}`);
     spot.append(piece);
   }
@@ -165,19 +174,40 @@ class Game {
   }
 }
 
+class Player {
+  constructor(color) {
+    this.color = color;
+  }
+}
+
 const gameBtn = document.getElementById('new-game');
 const curBoard = document.getElementById('board');
 // const playerOneColor = document.getElementById('player-one-color');
 // const playerTwoColor = document.getElementById('player-two-color');
 
-function startGame() { 
-  console.log("will start game");
+// function startGame(color1, color2) { 
+//   console.log("will start game");
+//   new Game() 
+//   // console.log(playerOneColor.input, playerTwoColor.input);
+
+// }
+
+gameBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  console.log(e);
   curBoard.innerHTML = '';
-  new Game() 
-  // console.log(playerOneColor.input, playerTwoColor.input);
+  pieceColor();
+});
 
+function pieceColor() {
+  let p1InputColor = new Player(document.getElementById("player-one-color").value);
+  let p2InputColor = new Player(document.getElementById("player-two-color").value);
+  // console.log(p1InputColor, p2InputColor);
+  // const p1Pieces = document.getElementsByClassName("p1");
+  // console.log(p1Pieces);
+  // p1Pieces.style.backgroundColor = "purple";
+
+  new Game(p1InputColor, p2InputColor)
 }
-
-gameBtn.addEventListener('click', startGame);
 
 
